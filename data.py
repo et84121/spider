@@ -9,8 +9,10 @@ To-DO:
 - [ ] store data to json
 
 """
-def store(token , index , csv_spider) :
+def store(token , index , csv_spider ) :
     result = dict()
+    spider_datas = list()
+
     if csv_spider == True :
         result['課程代號'] = token
         result['課程名稱'] = datas[index][2]
@@ -28,6 +30,9 @@ def store(token , index , csv_spider) :
         result['Session'] = 'none' #CSV沒有這個資料
         result['課程簡介'] = '無課程簡介'
     else :
+        spider_datas.append(spider.get_course(token)[1])
+
+
 
     return result
 
@@ -41,7 +46,6 @@ print(header)
 print(datas[1])
 
 tokenList = list()
-spider_datas = list()
 
 #store功能測試用
 #tokenList.append(csv_store('000217002' , 0 , True) ) 
@@ -51,15 +55,11 @@ spider_datas = list()
 
 for index, token in enumerate((data[0] for data in datas)): 
  # 取出全部的課程代號進行迭代
-   
-    spider_datas.append(spider.get_course(token)[1])
-
     try:
-       
         if spider.get_course(token)[1] :
-            tokenList.append(store(token , True)) 
+            tokenList.append(store(token , index , True)) 
         else:
-            tokenList.append(store(token , False)) 
+            tokenList.append(store(token , index , False)) 
         
         #print("CSV: " + datas[index][2] + " " + token + " " + (datas[index][1][0]) + "學分 " + datas[index][4] +  datas[index][5] + " " + datas[index][6])
         #print("網路端: " + spider_datas[index]['課程名稱']+ " " + token + " " + str(spider_datas[index]['學分數']) + "學分 " + spider_datas[index]['授課老師'] +  spider_datas[index]['Instructor'] + " " + spider_datas[index]['開課單位'])

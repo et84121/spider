@@ -1,5 +1,4 @@
 {
     "python.pythonPath": "C:\\python\\python.exe",
-    "code-runner.runInTerminal": true,
-    "python.linting.enabled": false,
+    "code-runner.runInTerminal": true
 }
