@@ -21,7 +21,6 @@ CSV備註
 csv_store(課程代號 , 0為從CSV取值、1為從爬蟲中取值 )
 ===
 ## 會回傳一個字典回來 
-(課程代號、課程名稱、CourseName、修別、學分數、選課人數、     
- 開課單位、授課老師、先修科目、上課時間[{day:節}{day:節}]
- Course Department、Instructor、Prerequisite、
- Session、課程簡介)
+課程代號、課程名稱、CourseName、修別、學分數、選課人數
+開課單位、授課老師、先修科目、上課時間[{day:節}{day:節}]
+Course Department、Instructor、Prerequisite、 Session、課程簡介
