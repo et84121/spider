@@ -27,7 +27,7 @@ def store(token , index , csv_spider) :
         result['Prerequisite'] = 'none' #CSV沒有這個資料
         result['Session'] = 'none' #CSV沒有這個資料
         result['課程簡介'] = '無課程簡介'
-    #else :
+    else :
 
     return result
 
@@ -57,9 +57,9 @@ for index, token in enumerate((data[0] for data in datas)):
     try:
        
         if spider.get_course(token)[1] :
-            tokenList.append(store(token , 0)) 
+            tokenList.append(store(token , True)) 
         else:
-            tokenList.append(store(token , 1)) 
+            tokenList.append(store(token , False)) 
         
         #print("CSV: " + datas[index][2] + " " + token + " " + (datas[index][1][0]) + "學分 " + datas[index][4] +  datas[index][5] + " " + datas[index][6])
         #print("網路端: " + spider_datas[index]['課程名稱']+ " " + token + " " + str(spider_datas[index]['學分數']) + "學分 " + spider_datas[index]['授課老師'] +  spider_datas[index]['Instructor'] + " " + spider_datas[index]['開課單位'])

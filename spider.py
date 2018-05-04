@@ -47,7 +47,7 @@ def get_course(token,school_year=106,semester=2):
         if soup.body.h1.get_text() == '找不到網頁':
             print('\n!!! Could not find course: {0}!!!\n'.format(token))
             print(str(e)+'\n')
-            return None
+            return False
 
     
 # token = 300820001
