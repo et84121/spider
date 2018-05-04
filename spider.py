@@ -38,7 +38,7 @@ def get_course(token,school_year=106,semester=2):
 
         result['課程簡介'] = soup.find('div','col-sm-7 sylview--mtop col-p-6').p.get_text().rstrip()
 
-        return result
+        return True,result
     except Exception as e:
         """
             ex URL:http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy=106&smt=2&num=000219&gop=55&s=2.html
@@ -53,7 +53,7 @@ def get_course(token,school_year=106,semester=2):
 # token = 300820001
 
 if __name__ == '__main__':
-    print(get_course(token='000219552').values())
+    print(get_course(token='000219552')[1].values())
     
 """
 課程名稱:大數據分析實務
