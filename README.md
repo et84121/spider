@@ -26,3 +26,6 @@ store(課程代號 , index , True為從CSV取值、False為從爬蟲中取值 )
 開課單位、授課老師、先修科目、上課時間[{day:節}{day:節}]
 
 Course Department、Instructor、Prerequisite、 Session、課程簡介
+
+FireCat跟carterchou是同一個人
+===
