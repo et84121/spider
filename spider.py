@@ -29,7 +29,7 @@ def get_course(token,school_year=106,semester=2):
         result['先修科目'] = li[2].get_text()[5:].rstrip()
         
         class_time = li[3].get_text()[5:].rstrip()
-        #result['上課時間'] = [{'day': datas[index][7][0],'節':datas[index][7][1]},{'day': datas[index][7][0],'節':datas[index][7][-1]}]
+        result['上課時間'] = [{'day': class_time[0] ,'節': class_time[1] } ,{'day': class_time[0] ,'節':class_time[-1]}]
         # Python rstrip() 删除 string 字符串末尾的指定字符（默认为空格）.
 
         li = soup.find('ul','nav nav-divider').find_all('span','En')

@@ -11,7 +11,6 @@ To-DO:
 """
 def store(token , index , csv_spider ) :
     result = dict()
-    spider_datas = list()
 
     if csv_spider == True :
         result['課程代號'] = token
@@ -29,12 +28,15 @@ def store(token , index , csv_spider ) :
         result['Prerequisite'] = 'none' #CSV沒有這個資料
         result['Session'] = 'none' #CSV沒有這個資料
         result['課程簡介'] = '無課程簡介'
+        
+        return result    
+
     else :
-        spider_datas.append(spider.get_course(token)[1])
+        return spider.get_course(token)[1]
+    
 
 
-
-    return result
+    
 
 fileName = '1061-course'
 jsonfile = open('{0}.json'.format(fileName),mode='w',encoding='utf-8')
@@ -61,6 +63,10 @@ for index, token in enumerate((data[0] for data in datas)):
         else:
             tokenList.append(store(token , index , False)) 
         
+        #print("儲存測試 : " + tokenList[index]['課程名稱'] + ' ' + token + ' ' + tokenList[index]['授課老師'] +  tokenList[index]['Instructor'] + " " +  tokenList[index]['開課單位'])
+        #print("測試2 :" + str(tokenList[index]['學分數'])[0] + "學分 ")
+        #print("測試3 : 上課星期 : " + tokenList[index]['上課時間'][0]['day'] + " 開始 : " +  tokenList[index]['上課時間'][0]['節'] + " 結束 : " + tokenList[index]['上課時間'][1]['節']  )
+
         #print("CSV: " + datas[index][2] + " " + token + " " + (datas[index][1][0]) + "學分 " + datas[index][4] +  datas[index][5] + " " + datas[index][6])
         #print("網路端: " + spider_datas[index]['課程名稱']+ " " + token + " " + str(spider_datas[index]['學分數']) + "學分 " + spider_datas[index]['授課老師'] +  spider_datas[index]['Instructor'] + " " + spider_datas[index]['開課單位'])
         #print()
@@ -68,4 +74,6 @@ for index, token in enumerate((data[0] for data in datas)):
         #print(spider_datas[index][4] + spider_datas[index][5] )
     except Exception as e:
         print(str(e))
+    
+    json.dumps(tokenList)
 
