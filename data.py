@@ -27,7 +27,7 @@ def store(token , index , csv_spider) :
         result['Prerequisite'] = 'none' #CSV沒有這個資料
         result['Session'] = 'none' #CSV沒有這個資料
         result['課程簡介'] = '無課程簡介'
-    else :
+    #else :
 
     return result
 
@@ -52,9 +52,10 @@ spider_datas = list()
 for index, token in enumerate((data[0] for data in datas)): 
  # 取出全部的課程代號進行迭代
    
-    #spider_datas.append(spider.get_course(token)[1])
+    spider_datas.append(spider.get_course(token)[1])
 
     try:
+       
         if spider.get_course(token)[1] :
             tokenList.append(store(token , 0)) 
         else:
