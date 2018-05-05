@@ -58,7 +58,7 @@ tokenList = list()
 for index, token in enumerate((data[0] for data in datas)): 
  # 取出全部的課程代號進行迭代
     try:
-        if spider.get_course(token)[1] :
+        if spider.get_course(token)[0] :
             tokenList.append(store(token , index , True)) 
         else:
             tokenList.append(store(token , index , False)) 
