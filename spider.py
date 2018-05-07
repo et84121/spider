@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 
-def get_course(token,school_year=106,semester=2):
+
+def get_course(token, school_year=106, semester=2):
     """
     Course data will be returned with a dict. 
     """
@@ -9,10 +10,11 @@ def get_course(token,school_year=106,semester=2):
     s = str(token)[8:9]
     gop = str(token)[6:8]
 
-    res = requests.get('http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy={3}&smt={4}&num={0}&gop={1}&s={2}.html'.format(num,gop,s,school_year,semester))
+    res = requests.get(
+        'http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy={3}&smt={4}&num={0}&gop={1}&s={2}.html'.format(num, gop, s, school_year, semester))
     res.encoding = 'utf-8'
     soup = BeautifulSoup(res.text, 'lxml')
-    
+
     try:
         result = dict()
 
@@ -20,27 +22,31 @@ def get_course(token,school_year=106,semester=2):
         result['課程名稱'] = soup.find(id='CourseName').get_text().rstrip()
         result['CourseName'] = soup.find(id='CourseNameEn').get_text().rstrip()
         result['修別'] = soup.h4.get_text()[3].rstrip()
-        result['學分數'] = int( (soup.find_all('i','sylview-icontext sylview-icontextB'))[0].get_text()[0] )
-        result['選課人數'] = int( (soup.find_all('i','sylview-icontext sylview-icontextB'))[1].get_text() )
-        
-        li = soup.find('ul','nav nav-divider').find_all('span','Zh')
+        result['學分數'] = int(
+            (soup.find_all('i', 'sylview-icontext sylview-icontextB'))[0].get_text()[0])
+        result['選課人數'] = int(
+            (soup.find_all('i', 'sylview-icontext sylview-icontextB'))[1].get_text())
+
+        li = soup.find('ul', 'nav nav-divider').find_all('span', 'Zh')
         result['開課單位'] = li[0].get_text()[5:].rstrip()
         result['授課老師'] = li[1].get_text()[5:].rstrip()
         result['先修科目'] = li[2].get_text()[5:].rstrip()
-        
+
         class_time = li[3].get_text()[5:].rstrip()
-        result['上課時間'] = [{'day': class_time[0] ,'節': class_time[1] } ,{'day': class_time[0] ,'節':class_time[-1]}]
+        result['上課時間'] = [{'day': class_time[0], '節': class_time[1]}, {
+            'day': class_time[0], '節':class_time[-1]}]
         # Python rstrip() 删除 string 字符串末尾的指定字符（默认为空格）.
 
-        li = soup.find('ul','nav nav-divider').find_all('span','En')
+        li = soup.find('ul', 'nav nav-divider').find_all('span', 'En')
         result['Course Department'] = li[0].get_text()[18:].rstrip()
-        result['Instructor']        = li[1].get_text()[11:].rstrip()
-        result['Prerequisite']      = li[2].get_text()[13:-1].rstrip()
-        result['Session']           = li[3].get_text()[8:].rstrip()
+        result['Instructor'] = li[1].get_text()[11:].rstrip()
+        result['Prerequisite'] = li[2].get_text()[13:-1].rstrip()
+        result['Session'] = li[3].get_text()[8:].rstrip()
 
-        result['課程簡介'] = soup.find('div','col-sm-7 sylview--mtop col-p-6').p.get_text().rstrip()
+        result['課程簡介'] = soup.find(
+            'div', 'col-sm-7 sylview--mtop col-p-6').p.get_text().rstrip()
 
-        return True,result
+        return True, result
     except Exception as e:
         """
             ex URL:http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy=106&smt=2&num=000219&gop=55&s=2.html
@@ -51,12 +57,12 @@ def get_course(token,school_year=106,semester=2):
             print(str(e)+'\n')
             return False
 
-    
+
 # token = 300820001
 
 if __name__ == '__main__':
     print(get_course(token='000219552')[1].values())
-    
+
 """
 課程名稱:大數據分析實務
 CourseName:Big Data Analysis
