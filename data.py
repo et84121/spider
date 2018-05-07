@@ -35,9 +35,6 @@ def store(token , index , csv_spider ) :
         return spider.get_course(token)[1]
     
 
-
-    
-
 fileName = '1061-course'
 jsonfile = open('{0}.json'.format(fileName),mode='w',encoding='utf-8')
 csvfile = open('1061.csv',mode='r',encoding='utf-8')
@@ -75,5 +72,6 @@ for index, token in enumerate((data[0] for data in datas)):
     except Exception as e:
         print(str(e))
     
-    json.dumps(tokenList)
+
+json.dumps(tokenList)
 
