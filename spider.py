@@ -31,10 +31,7 @@ def get_course(token, school_year=106, semester=2):
         result['開課單位'] = li[0].get_text()[5:].rstrip()
         result['授課老師'] = li[1].get_text()[5:].rstrip()
         result['先修科目'] = li[2].get_text()[5:].rstrip()
-
-        class_time = li[3].get_text()[5:].rstrip()
-        result['上課時間'] = [{'day': class_time[0], '節': class_time[1]}, {
-            'day': class_time[0], '節':class_time[-1]}]
+        result['上課時間'] = li[3].get_text()[5:].rstrip()
         # Python rstrip() 删除 string 字符串末尾的指定字符（默认为空格）.
 
         li = soup.find('ul', 'nav nav-divider').find_all('span', 'En')
@@ -46,6 +43,8 @@ def get_course(token, school_year=106, semester=2):
         result['課程簡介'] = soup.find(
             'div', 'col-sm-7 sylview--mtop col-p-6').p.get_text().rstrip()
 
+        result['status'] = 'success'
+
         return True, result
     except Exception as e:
         """
@@ -53,15 +52,18 @@ def get_course(token, school_year=106, semester=2):
             經濟學 000219552 cann't find
         """
         if soup.body.h1.get_text() == '找不到網頁':
-            print('\n!!! Could not find course: {0}!!!\n'.format(token))
-            print(str(e)+'\n')
-            return False
+            result['status'] = 'fail'
+            return False, result
+        else:
+            print(str(e))
+            result['status'] = 'error'
+            return False, result
 
 
 # token = 300820001
 
 if __name__ == '__main__':
-    print(get_course(token='000219552')[1].values())
+    print(get_course(token='000219552'))
 
 """
 課程名稱:大數據分析實務

@@ -1,6 +1,7 @@
 import csv
 import json
 import spider
+import os
 """
 import data from csv ,compare data from spider, save them into json. 
 
@@ -40,41 +41,42 @@ def store(token, index, csv_spider):
         return spider.get_course(token)[1]
 
 
-fileName = '1061-course'
-jsonfile = open('{0}.json'.format(fileName), mode='w', encoding='utf-8')
-csvfile = open('1061.csv', mode='r', encoding='utf-8')
+if __name__ == '__main__':
+    """
+    此python檔被呼叫時的進入點
+    """
+    fileName = '1061-course'
+    csvfile = open('1061.csv', mode='r', encoding='utf-8')
 
-header, *datas = csv.reader(csvfile)
+    header, *datas = csv.reader(csvfile)
+    # csv 讀檔
 
-print(header)
-print(datas[1])
+    print(header)
+    print(datas[1])
 
-tokenList = list()
+    """
+    get spiderDatas
+    """    
+    spiderDatas = list()  # for store datas from spider
 
-# store功能測試用
-#tokenList.append(csv_store('000217002' , 0 , True) )
-#print("儲存測試 : " + tokenList[0]['課程名稱']+  ' 000217002 ' +  tokenList[0]['授課老師'] +  tokenList[0]['Instructor'] + " " +  tokenList[0]['開課單位'])
-#print("測試2 :" + str(tokenList[0]['學分數'])[0] + "學分 ")
-#print("測試3 : 上課星期 : " + tokenList[0]['上課時間'][0]['day'] + " 開始 : " +  tokenList[0]['上課時間'][0]['節'] + " 結束 : " + tokenList[0]['上課時間'][1]['節']  )
+    if ( not os.path.isfile('{0}.json'.format(fileName)) ) or ( os.path.getsize('{0}.json'.format(fileName)) == 0 ):
+        # if there is not jsonfile here or have a empyt jsonfile, call spider function to get datas
+        # or get spiderDatas from exist jsonFile
 
-for index, token in enumerate((data[0] for data in datas)):
- # 取出全部的課程代號進行迭代
-    try:
-        if spider.get_course(token)[0]:
-            tokenList.append(store(token, index, True))
-        else:
-            tokenList.append(store(token, index, False))
-
-        #print("儲存測試 : " + tokenList[index]['課程名稱'] + ' ' + token + ' ' + tokenList[index]['授課老師'] +  tokenList[index]['Instructor'] + " " +  tokenList[index]['開課單位'])
-        #print("測試2 :" + str(tokenList[index]['學分數'])[0] + "學分 ")
-        #print("測試3 : 上課星期 : " + tokenList[index]['上課時間'][0]['day'] + " 開始 : " +  tokenList[index]['上課時間'][0]['節'] + " 結束 : " + tokenList[index]['上課時間'][1]['節']  )
-
-        #print("CSV: " + datas[index][2] + " " + token + " " + (datas[index][1][0]) + "學分 " + datas[index][4] +  datas[index][5] + " " + datas[index][6])
-        #print("網路端: " + spider_datas[index]['課程名稱']+ " " + token + " " + str(spider_datas[index]['學分數']) + "學分 " + spider_datas[index]['授課老師'] +  spider_datas[index]['Instructor'] + " " + spider_datas[index]['開課單位'])
-        # print()
-        #print(spider_datas[index]['課程名稱']+ " " + spider_datas[index]['開課系級'])
-        #print(spider_datas[index][4] + spider_datas[index][5] )
-    except Exception as e:
-        print(str(e))
-
-    json.dumps(tokenList)
+        with open('{0}.json'.format(fileName), mode='w', encoding='utf-8') as jsonfile:
+            for index, token in enumerate((row[0] for row in datas)):
+                # 取出全部的課程代號進行迭代
+                tmp, tmp1 = spider.get_course(token)
+                # if tmp is true means spider have geted the data from web
+                spiderDatas.append(tmp1)
+                if tmp:
+                    print(str(index) + " " + tmp1['課程名稱']+ " " + tmp1['課程代號'])
+                else:
+                    print(str(index) + " cannot get course: " + str(token))
+                
+            json.dump(spiderDatas, jsonfile)
+            # dump spiderDatas into jsonfile
+    else:
+        with open('{0}.json'.format(fileName), mode='r', encoding='utf-8') as jsonfile:
+            spiderDatas = json.load(jsonfile)
+            # get spiderDatas from exist jsonFile
