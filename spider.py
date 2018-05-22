@@ -1,17 +1,21 @@
 from bs4 import BeautifulSoup
 import requests
 
+# Python爬虫包 BeautifulSoup 学习（二） 异常处理
+# https://blog.csdn.net/u013007900/article/details/53819711
+
 
 def get_course(token, school_year=106, semester=2):
     """
-    Course data will be returned with a dict. 
+    Course data will be returned with a dict.
     """
     num = str(token)[0:6]
     s = str(token)[8:9]
     gop = str(token)[6:8]
 
+    requests.adapters.DEFAULT_RETRIES = 10
     res = requests.get(
-        'http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy={3}&smt={4}&num={0}&gop={1}&s={2}.html'.format(num, gop, s, school_year, semester))
+        'http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy={3}&smt={4}&num={0}&gop={1}&s={2}.html'.format(num, gop, s, school_year, semester), timeout=5)
     res.encoding = 'utf-8'
     soup = BeautifulSoup(res.text, 'lxml')
 
@@ -45,7 +49,7 @@ def get_course(token, school_year=106, semester=2):
 
         result['status'] = 'success'
 
-        return True, result
+        return result
     except Exception as e:
         """
             ex URL:http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy=106&smt=2&num=000219&gop=55&s=2.html
@@ -53,11 +57,11 @@ def get_course(token, school_year=106, semester=2):
         """
         if soup.body.h1.get_text() == '找不到網頁':
             result['status'] = 'fail'
-            return False, result
+            return result
         else:
             print(str(e))
             result['status'] = 'error'
-            return False, result
+            return result
 
 
 # token = 300820001
