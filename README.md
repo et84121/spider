@@ -7,25 +7,16 @@
 ## 相依性
 `pip install BeautifulSoup4 Requests`
 
+## 功能
 
-CSV備註
-===
-## 缺少的資料 :
-1. 選課人數
-2. 英文的系所
-3. 先修科目
-4. 年級
-5. 課程簡介
+- 從教學大綱抓取資料(spider.py 模組)  
+    - 三種狀態 (成功、資料不存在、其它錯誤ex.TimeOut) 
+- 將spider爬回的資料先存成json檔，加速後續資料操作.
+- 實作log功能可有效知道爬取狀態
+- 與csv資料互相比較取優值
+- 上課時間、開課單位、老師等欄位分割為列表
 
+## 結果格式 飯粒
+![](https://i.imgur.com/1pUkzIa.png)
 
-store(課程代號 , index , True為從CSV取值、False為從爬蟲中取值 )
-===
-## 會回傳一個字典回來 
-課程代號、課程名稱、CourseName、修別、學分數、選課人數
-
-開課單位、授課老師、先修科目、上課時間[{day:節}{day:節}]
-
-Course Department、Instructor、Prerequisite、 Session、課程簡介
-
-FireCat跟carterchou是同一個人
-===
+### FireCat跟carterchou是同一個人

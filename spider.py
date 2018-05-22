@@ -13,9 +13,9 @@ def get_course(token, school_year=106, semester=2):
     s = str(token)[8:9]
     gop = str(token)[6:8]
 
-    requests.adapters.DEFAULT_RETRIES = 10
+    requests.adapters.DEFAULT_RETRIES = 20
     res = requests.get(
-        'http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy={3}&smt={4}&num={0}&gop={1}&s={2}.html'.format(num, gop, s, school_year, semester), timeout=5)
+        'http://newdoc.nccu.edu.tw/teaschm/1062/schmPrv.jsp-yy={3}&smt={4}&num={0}&gop={1}&s={2}.html'.format(num, gop, s, school_year, semester), timeout=20)
     res.encoding = 'utf-8'
     soup = BeautifulSoup(res.text, 'lxml')
 
